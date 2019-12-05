@@ -26,26 +26,16 @@ class Machine
   def execute(input)
     loop do
       case op = next_op
-      when 1
-        write(read + read)
-      when 2
-        write(read * read)
-      when 3
-        write(input)
-      when 4
-        puts read
-      when 5
-        read > 0 ? (@pos = read) : read
-      when 6
-        read == 0 ? (@pos = read) : read
-      when 7
-        write(read < read ? 1 : 0)
-      when 8
-        write(read == read ? 1 : 0)
-      when 99
-        break
-      else
-        raise "Unknown code #{op}"
+      when  1 then write(read + read)
+      when  2 then write(read * read)
+      when  3 then write(input)
+      when  4 then puts read
+      when  5 then read > 0 ? (@pos = read) : read
+      when  6 then read == 0 ? (@pos = read) : read
+      when  7 then write(read < read ? 1 : 0)
+      when  8 then write(read == read ? 1 : 0)
+      when 99 then break
+      else         raise "Unknown code #{op}"
       end
     end
   end
