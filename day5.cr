@@ -4,25 +4,6 @@ class Machine
     @modes = [] of Int32
   end
 
-  def next_op
-    @modes.clear
-    op = read_and_increment
-    @modes.push(op // 1000 % 10, op // 100 % 10)
-    op % 100
-  end
-
-  def read_and_increment
-    @codes[@pos].tap { @pos += 1 }
-  end
-
-  def read
-    @modes.pop == 0 ? @codes[read_and_increment] : read_and_increment
-  end
-
-  def write(value)
-    @codes[read_and_increment] = value
-  end
-
   def execute(input)
     loop do
       case op = next_op
@@ -38,6 +19,25 @@ class Machine
       else         raise "Unknown code #{op}"
       end
     end
+  end
+
+  private def next_op
+    @modes.clear
+    op = read_and_increment
+    @modes.push(op // 1000 % 10, op // 100 % 10)
+    op % 100
+  end
+
+  private def read_and_increment
+    @codes[@pos].tap { @pos += 1 }
+  end
+
+  private def read
+    @modes.pop == 0 ? @codes[read_and_increment] : read_and_increment
+  end
+
+  private def write(value)
+    @codes[read_and_increment] = value
   end
 end
 
