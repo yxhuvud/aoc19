@@ -1,10 +1,7 @@
 codes = File.read("input.day7").split(',').map(&.to_i)
 
 class Machine
-  property input : Deque(Int32)
-  property output : Deque(Int32)
-
-  def initialize(@codes : Array(Int32), @input, @output)
+  def initialize(@codes : Array(Int32), @input : Deque(Int32), @output : Deque(Int32))
     @pos = 0
     @modes = [] of Int32
   end
@@ -15,12 +12,12 @@ class Machine
       when 1 then write(read + read)
       when 2 then write(read * read)
       when 3
-        if input.empty?
+        if @input.empty?
           @pos = @pos - 1
           break false
         end
-        write(input.shift)
-      when  4 then output << read
+        write(@input.shift)
+      when  4 then @output << read
       when  5 then read > 0 ? (@pos = read) : read
       when  6 then read == 0 ? (@pos = read) : read
       when  7 then write(read < read ? 1 : 0)
