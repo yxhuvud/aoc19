@@ -64,6 +64,7 @@ def pipeline(codes, perms)
   end
 end
 
+# so eh, the answer to part2 actually work for part1 too..
 puts "part1"
 p pipeline(codes, [0, 1, 2, 3, 4])
 puts "part2"
