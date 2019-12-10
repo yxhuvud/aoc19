@@ -13,31 +13,31 @@ end
 sightings =
   asteroids.map do |a|
     asteroids.compact_map do |p|
+      next if a == p
       dx = a.x - p.x
       dy = a.y - p.y
       len = Math.sqrt(dx ** 2 + dy ** 2)
-      next if len.zero?
       {(dx / len).round(10), (dy / len).round(10), p, len}
     end.group_by { |dx, dy| {dx, dy} }
       .values                # ie, of all in the same direction, find
       .map(&.min_by(&.last)) # the closest.
   end
 
-orbital = sightings.max_by(&.size)
+station = sightings.max_by(&.size)
 puts "part1"
-puts orbital.size
+puts station.size
 
 shooting_order =
   (
-    first_quadrant = orbital.select do |dx, dy|
+    first_quadrant = station.select do |dx, dy|
       dx <= 0 && dy >= 0
     end.sort_by &.[1]
   ) + (
-    second_and_third_quadrant = orbital.select do |dx, dy|
+    second_and_third_quadrant = station.select do |dx, dy|
       dy < 0
     end.sort_by &.[0]
   ) + (
-    fourth_quadrant = orbital.select do |dx, dy|
+    fourth_quadrant = station.select do |dx, dy|
       dx > 0 && dy >= 0
     end.sort_by &.[1]
   )
