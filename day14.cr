@@ -33,7 +33,7 @@ def cook(cookbook, fuel)
     else
       unit, ingredients = cookbook[key]
       factor = (amount / unit).ceil.to_big_i
-      inventory[key] = (factor * unit - amount)
+      inventory[key] = factor * unit - amount
       ingredients.each do |ingredient, value|
         value *= factor
         if ingredient == "ORE"
