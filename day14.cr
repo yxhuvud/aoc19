@@ -11,16 +11,16 @@ cookbook = parsed.to_h do |row|
   {
     row.last.flatten.last,
     {
-      row.last.flatten.first.to_i,
-      row.first.to_h { |reagent| {reagent.last, reagent.first.to_i} },
+      row.last.flatten.first.to_i64,
+      row.first.to_h { |reagent| {reagent.last, reagent.first.to_i64} },
     },
   }
 end
 
 def cook(cookbook, fuel)
-  ore_need = 0
-  inventory = {} of String => BigInt
-  needs = {"FUEL" => fuel}
+  ore_need = 0i64
+  inventory = {} of String => Int64
+  needs = {"FUEL" => fuel.to_i64}
 
   while needs.any?
     key, amount = needs.shift
@@ -32,7 +32,7 @@ def cook(cookbook, fuel)
       needs[key] = amount
     else
       unit, ingredients = cookbook[key]
-      factor = (amount / unit).ceil.to_big_i
+      factor = (amount / unit).ceil.to_i64
       inventory[key] = factor * unit - amount
       ingredients.each do |ingredient, value|
         value *= factor
@@ -41,7 +41,7 @@ def cook(cookbook, fuel)
         elsif needs[ingredient]?
           needs[ingredient] += value
         else
-          needs[ingredient] = value.to_big_i
+          needs[ingredient] = value
         end
       end
     end
@@ -50,11 +50,10 @@ def cook(cookbook, fuel)
 end
 
 puts "part1"
-p cook(cookbook, 1.to_big_i)
+p cook(cookbook, 1)
 
-# Sigh, got compiler errors when running this with i128, so bigint it is.
 amount = (0..1000000000).bsearch do |i|
-  cook(cookbook, (i + 1).to_big_i) > 1000000000000
+  cook(cookbook, i + 1) > 1000000000000
 end
 puts "part2"
 p amount if amount
