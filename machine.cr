@@ -1,5 +1,5 @@
 class Machine
-  def initialize(@codes : Array(Int64), @input : Deque(Int64), @output : Deque(Int64))
+  def initialize(@codes : Array(Int64), @input = Deque(Int64).new, @output = Deque(Int64).new)
     @pos = 0i32
     @relative_base = 0i32
     @modes = [] of Int64
@@ -26,6 +26,14 @@ class Machine
       else         raise "Unreachable"
       end
     end
+  end
+
+  def input(n)
+    @input << n.to_i64
+  end
+
+  def output
+    @output.shift
   end
 
   private def next_op
